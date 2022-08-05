@@ -38,8 +38,6 @@ User.findOne({email : req.body.email})
                     )
                 });
             }
-
-
         })
         .catch(error =>{
             res.status(500).json({error});

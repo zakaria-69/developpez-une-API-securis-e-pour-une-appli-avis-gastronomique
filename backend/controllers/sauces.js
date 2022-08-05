@@ -1,17 +1,16 @@
-const sauces = require('../models/Sauces');
-const sauce = require ('../models/Sauces');
+const Sauce = require('../models/Sauces');
+//const sauce = require ('../models/Sauces');
 
 //revoie un tableau de toute les sauces 
 exports.displayAllSauces = (req, res, next) => {
-    sauce.find()
-    .then(sauce => res.status(200).json(sauce))
+    Sauce.find()
+    .then(sauces => res.status(200).json(sauces))
     .catch(error => res.status(400).json({error}));
    };
 
    //renvoie la sauce avec l'id fourni
-   exports.displayOneSauce = (res,req,next) => {
-    sauce.findOne({ _id : req.params.id})
-    console.log(req.params)
+   exports.displayOneSauce = (req,res,next) => {
+    Sauce.findOne({ _id : req.params.id})
     .then(sauce => res.status(200).json({sauce}) )
     .catch(error => res.status(404).json({error}));
   };
@@ -23,13 +22,12 @@ const sauceObject = JSON.parse(req.body.sauce);
 console.log(sauceObject)
 delete sauceObject._id;
 delete sauceObject._userId;
-const sauce = new sauces({
+const sauce = new Sauce({
     ...sauceObject,
     userId:req.auth.userId,
-    imageUrl:` ${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-   
+    imageUrl:
+    ` ${req.protocol}://${req.get('host')}/images/${req.file.filename}`  
 });
-console.log(req)
 sauce.save()
 .then(() => {res.status(201).json({message : 'objet enregistré'})})
 .catch(error => {res.status(400).json({error})});
@@ -44,7 +42,7 @@ const sauceObject = req.file ? {
 } : { ...req.body};
 
 delete sauceObject.userId;
-sauce.findOne({_id:req.params.id})
+Sauce.findOne({_id:req.params.id})
 .then((sauce) => {
   if (sauce.userId != req.auth.userId){
     res.status(401).json({message :error})
@@ -66,7 +64,7 @@ sauce.findOne({_id:req.params.id})
 
     //supprime une sauce avec l'id fournis
   exports.deleteSauce = (req,res,next)=>{
-    sauce.deleteOne({ _id :req.params.id})
+    Sauce.deleteOne({ _id :req.params.id})
     .then(() => res.status(200).json({message : 'objet supprimé'}))
     .catch(error => res.status(400).json({error}));
   };
