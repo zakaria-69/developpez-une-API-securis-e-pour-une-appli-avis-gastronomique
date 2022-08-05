@@ -1,4 +1,4 @@
-const http = require ('http');
+const http = require('http');
 const app = require('./app');
 
 const normalizePort = val =>{
@@ -13,9 +13,7 @@ const normalizePort = val =>{
     return false;
 };
 
-const port = normalizePort(process.env.PORT || 3000)
-
-app.set('port' , process.env.PORT || '3000' );
+const port = normalizePort(process.env.PORT || '3000')
 app.set('port' , port);
 
 const errorHandler = error => {
@@ -31,7 +29,7 @@ const errorHandler = error => {
         process.exit(1);
         break;
         case 'EADDRINUSE' : 
-        console.log(bind + 'is already use.');
+        console.error(bind + 'is already in use.');
         process.exit(1);
         break;
         default:
@@ -50,3 +48,4 @@ server.on('listening', ()=> {
 });
 
 server.listen(port);
+

@@ -1,4 +1,5 @@
-const Sauce = require('../models/Sauces');
+const Sauce = require('../models/Sauce');
+const  fs = require('fs');
 //const sauce = require ('../models/Sauces');
 
 //revoie un tableau de toute les sauces 
@@ -19,7 +20,6 @@ exports.displayAllSauces = (req, res, next) => {
   //initialise like et dislike a 0 avec tableau vides
 exports.createSauce = (req,res,next)=>{
 const sauceObject = JSON.parse(req.body.sauce);
-console.log(sauceObject)
 delete sauceObject._id;
 delete sauceObject._userId;
 const sauce = new Sauce({
@@ -40,38 +40,46 @@ const sauceObject = req.file ? {
   imageUrl : ` ${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
 
 } : { ...req.body};
-
 delete sauceObject.userId;
 Sauce.findOne({_id:req.params.id})
 .then((sauce) => {
   if (sauce.userId != req.auth.userId){
-    res.status(401).json({message :error})
+    res.status(401).json({message :' not authorized'});
   }else{
-    sauce.updateOne({_id:req.params.id},{...sauceObject,_id:req.params.id})
-    .then(()=> res.status(200).json({message : 'objet crée'}))
+    Sauce.updateOne({_id:req.params.id},{...sauceObject,_id:req.params.id})
+    .then(()=> res.status(200).json({message : 'objet modifié'}))
     .catch(error =>res.status(401).json({error}))
   }
 })
 .catch((error) => {
   res.status(400).json({error})
 })
-
-    /*sauces.updateOne({_id :req.params.id}, {...req.body, _i: req.params.id})
-    .then(sauce => res.status(200).json({message : 'objet modifié'}))
- .catch(error => res.status(400).json({error}));*/
   };
 
 
     //supprime une sauce avec l'id fournis
   exports.deleteSauce = (req,res,next)=>{
-    Sauce.deleteOne({ _id :req.params.id})
-    .then(() => res.status(200).json({message : 'objet supprimé'}))
-    .catch(error => res.status(400).json({error}));
+    Sauce.findOne({ _id :req.params.id})
+    .then(sauce => {
+      if (sauce.userId != req.auth.userId){
+        res.status(401).json({message : 'not authorized'});
+      }else{
+        const filename =sauce.imageUrl.split('/images/')[1];
+        fs.unlink(`images/${filename}`, () =>{
+          Sauce.deleteOne({_id : req.params.id})
+          .then(() => res.status(200).json({message : 'objet supprimé'}))
+          .catch(error => res.status(401).json({error}));
+        });
+      }
+    })
+    .catch( error => {
+      res.status(500).json({error});
+    });   
   };
 
   //systeme de like 
   /*exports.likeSysteme = (req,res)=>{
     
 };*/
-
+ 
 
