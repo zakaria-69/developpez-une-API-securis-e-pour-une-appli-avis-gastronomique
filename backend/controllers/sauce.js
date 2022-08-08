@@ -26,7 +26,7 @@ const sauce = new Sauce({
     ...sauceObject,
     userId:req.auth.userId,
     imageUrl:
-    ` ${req.protocol}://${req.get('host')}/images/${req.file.filename}`  
+    `${req.protocol}://${req.get('host')}/images/${req.file.filename}`  
 });
 sauce.save()
 .then(() => {res.status(201).json({message : 'objet enregistré'})})
@@ -37,8 +37,7 @@ sauce.save()
   exports.modifySauce = (req,res,next)=>{
 const sauceObject = req.file ? {
   ...JSON.parse(req.body.sauce),
-  imageUrl : ` ${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
-
+  imageUrl : ` ${req.protocol}://${req.get('host')}/images/${req.file.filename}`
 } : { ...req.body};
 delete sauceObject.userId;
 Sauce.findOne({_id:req.params.id})
