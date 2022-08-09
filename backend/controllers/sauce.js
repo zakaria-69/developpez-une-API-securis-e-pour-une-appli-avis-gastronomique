@@ -41,7 +41,7 @@ sauce.save()
   exports.modifySauce = (req,res,next)=>{
 const sauceObject = req.file ? {
   ...JSON.parse(req.body.sauce),
-  imageUrl : ` ${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+  imageUrl : `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
 } : { ...req.body};
 delete sauceObject.userId;
 Sauce.findOne({_id:req.params.id})
@@ -81,8 +81,68 @@ Sauce.findOne({_id:req.params.id})
   };
 
   //systeme de like 
-  /*exports.likeSysteme = (req,res)=>{
-    
-};*/
+  exports.likeSauceSysteme = (req,res,next)=>{
+    Sauce.findOne({_id :req.params.id})
+    .then(sauce => {
+      //if like 
+      if(!sauce.usersLiked.includes(req.body.userId) && req.body.like
+       === 1){
+        Sauce.updateOne(
+          {_id : req.params.id},
+          {
+             $inc : {likes : 1},
+             $push : {usersLiked : req.body.userId}
+            
+            }
+
+        )
+        .then(()=> res.status(201).json({message : 'sauce liked'}))
+        .catch((error) => res.status(400).json(error))
+      }
+//if reset to no vote or no vote 
+if(sauce.usersLiked.includes(req.body.userId) && req.body.like === 0){
+  Sauce.updateOne(
+    {_id : req.params.id},
+    {
+       $inc : {likes : -1},
+       $pull : {usersLiked : req.body.userId}
+      
+      }
+  )
+  .then(()=> res.status(201).json({message : 'aucun vote'}))
+  .catch((error) => res.status(400).json(error))
+}
+
+//if dislike
+if(!sauce.usersDisliked.includes(req.body.userId) && req.body.like === -1){
+  Sauce.updateOne(
+    {_id : req.params.id},
+    {
+       $inc : {dislikes : 1},
+       $push : {usersDisliked : req.body.userId}
+      
+      }
+  )
+  .then(()=> res.status(201).json({message : 'sauce disliked'}))
+  .catch((error) => res.status(400).json(error))
+}
+
+//if user undislike or no vote
+if(sauce.usersDisliked.includes(req.body.userId) && req.body.like === 0){
+  Sauce.updateOne(
+    {_id : req.params.id},
+    {
+       $inc : {dislikes : 0},
+       $pull : {usersDisliked : req.body.userId}
+      
+      }
+  )
+  .then(()=> res.status(201).json({message : 'aucun vote'}))
+  .catch((error) => res.status(400).json(error))
+}
+   })
+    .catch((error) => res.status(404).json(error));
+};
  
+
 
