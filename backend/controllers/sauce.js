@@ -130,7 +130,7 @@ if(sauce.usersDisliked.includes(req.body.userId) && req.body.like === 0){
   Sauce.updateOne(
     {_id : req.params.id},
     {
-       $inc : {dislikes : 0},
+       $inc : {dislikes : -1},
        $pull : {usersDisliked : req.body.userId}
       
       }
