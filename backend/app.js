@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const helmet = require('helmet');
 const mongoose = require('mongoose');
 const path= require('path');
 require('dotenv').config();
@@ -7,6 +8,8 @@ require('dotenv').config();
 
 const saucesRoutes = require('./routes/sauce');
 const userRoutes = require('./routes/user');
+
+app.use(helmet({crossOriginResourcePolicy : false}));
 
 
 //connexion BDD
