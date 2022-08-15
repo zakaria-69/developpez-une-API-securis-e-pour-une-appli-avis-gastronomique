@@ -33,7 +33,7 @@ User.findOne({email : req.body.email})
                     userId:user._id,
                     token : jwt.sign(
                         {userId : user._id },
-                        'RANDOM_TOKEN_SECRET',
+                        process.env.Secret_token,
                         {expiresIn : '24h'}
                     )
                 });
