@@ -21,7 +21,7 @@ Accedez au server sur le port 3000.
 
 Ce projet est en relation avec une base de données MongoDB.
 
-.env model : 
+.env model :   
 BDD_password= ""  
 BDD_username =""  
 BDD_cluster = ""  
