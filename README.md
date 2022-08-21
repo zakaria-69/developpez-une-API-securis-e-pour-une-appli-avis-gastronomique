@@ -22,13 +22,13 @@ Accedez au server sur le port 3000.
 Ce projet est en relation avec une base de données MongoDB.
 
 .env model : 
-BDD_password= ""
-BDD_username =""
-BDD_cluster = ""
-Secret_token = "" ;
+BDD_password= ""  
+BDD_username =""  
+BDD_cluster = ""  
+Secret_token = ""  
 
 le fichier .env sera envoyé à l'évaluateur dans le dossier .zip pour lui permettre un accès admin à nôtre base de données.  
-Un accès préalable lui aura été ouvert:
+Un accès préalable lui aura été ouvert:  
  username : 'invit'  
  authentification method : SCRAM   
  mongoDBroles : readWriteAnyDatabase@admin  
