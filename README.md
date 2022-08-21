@@ -5,9 +5,11 @@ pour lancer le projet et pouvoir utlilisé l'API veuillez suivre les étapes ci-
 
 1:installez node.js  
 2:installez angular CLI  
-3:installez nodemon  
-4:installez les dependances pour le backend et le frontend.pour ce faire,à patir du dossier racine lancer "npm install" pour les dependance du front,
-pour le dossier backend à partir d'un nouvel invit de commande entrer "cd backend" puis "npm install" pour installer les dependances du backend.
+3:installez nodemon 
+
+
+4:installez les dependances pour le backend et le frontend.pour ce faire,à patir du dossier racine lancer "npm install" pour les dépendances du front,
+pour le dossier backend à partir d'un nouvel invit de commande entrer "cd backend" puis "npm install" pour installer les dépendances du backend.
 
 Front-end : A partir du dossier racine lancer la commande "npm run start"
 lancer le projet en local sur le port 4200 ou copier coller ce lien dans vôtre navigateur http://localhost:4200/
